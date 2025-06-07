@@ -5,6 +5,7 @@ import { LocationData, Location } from './locations';
 import { Profile } from './profiles';
 import axios, { API } from './axios';
 import { ImageStub } from './files';
+import dayjs from './dayjs';
 
 export * from './events';
 export * from './groups';

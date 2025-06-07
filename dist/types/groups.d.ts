@@ -1,0 +1,41 @@
+import { ImageStub } from './files';
+import { Member, HostData, Junction } from '.';
+import { Type } from '.';
+export type GroupData = any & {
+    type?: Type;
+    junctions?: HostData[] | null;
+    integration: string | null;
+};
+export declare class Group implements Member {
+    uuid: string;
+    name: string;
+    theme_color: string | null;
+    valid: boolean;
+    nickname: string | null;
+    username: string;
+    tagline: string | null;
+    cover_img: ImageStub | null;
+    icon_img: ImageStub | null;
+    type: Type;
+    metadata: any;
+    access_token: string | null;
+    access_token_expires: string | null;
+    refresh_token: string | null;
+    refresh_token_expires: string | null;
+    scope: string | null;
+    integration: string | null;
+    junctions: Map<string, Junction>;
+    token?: string | null;
+    constructor(item?: Partial<GroupData>);
+    getHostColumnString: () => string;
+    getUsername(): string;
+    getType: () => Type;
+    getItem: () => this;
+    connectTo(other: Member): Junction;
+    getIconPath: (quick?: boolean) => string | null;
+    id: () => string;
+    item_id: () => string;
+    item_path: () => string;
+    copy: () => Group;
+    eject: () => GroupData;
+}

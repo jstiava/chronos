@@ -1,4 +1,4 @@
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs, { Dayjs as DayjsType } from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import isToday from 'dayjs/plugin/isToday';
 import timezone from 'dayjs/plugin/timezone';
@@ -36,17 +36,17 @@ declare module 'dayjs' {
      * Get the [this, this + 1(day),... ,end_date(day)]
      * @param end_date Dayjs
      */
-    getFrame(arg1?: number): Dayjs[];
-    to(other: Dayjs | null | undefined, includeYear?: boolean, format?: {
+    getFrame(arg1?: number): DayjsType[];
+    to(other: DayjsType | null | undefined, includeYear?: boolean, format?: {
       month?: string,
       day?: string,
       year?: string
     }): string;
-    setTime(time: Chronos): Dayjs;
-    duration(other: Dayjs | null | undefined): string;
-    max(second: Dayjs): Dayjs;
-    min(second: Dayjs): Dayjs;
-    flipMeridium(): Dayjs;
+    setTime(time: Chronos): DayjsType;
+    duration(other: DayjsType | null | undefined): string;
+    max(second: DayjsType): DayjsType;
+    min(second: DayjsType): DayjsType;
+    flipMeridium(): DayjsType;
   }
 }
 
@@ -55,11 +55,11 @@ dayjs.prototype.flipMeridium = function () {
   return hour >= 12 ? this.subtract(12, 'hour') : this.add(12, 'hour');
 }
 
-dayjs.prototype.max = function (second: Dayjs) {
+dayjs.prototype.max = function (second: DayjsType) {
   return this.isAfter(second, 'd') ? this : second;
 }
 
-dayjs.prototype.min = function (second: Dayjs) {
+dayjs.prototype.min = function (second: DayjsType) {
   return this.isBefore(second, 'd') ? this : second;
 }
 
@@ -68,7 +68,7 @@ dayjs.prototype.setTime = function (time: Chronos) {
   return this.set('hour', time.getHour()).set('minute', time.getMinute());
 }
 
-dayjs.prototype.getFrame = function (arg1: number = 1): Dayjs[] {
+dayjs.prototype.getFrame = function (arg1: number = 1): DayjsType[] {
 
   const stageDays = [];
 
@@ -164,7 +164,7 @@ dayjs.prototype.isInDayView = function (threshold: number) {
   return false;
 }
 
-dayjs.prototype.to = function (other: Dayjs | null | undefined, includeYear: boolean = false, format = {
+dayjs.prototype.to = function (other: DayjsType | null | undefined, includeYear: boolean = false, format = {
   month: "",
   day: "",
   year: ""
@@ -190,7 +190,7 @@ dayjs.prototype.to = function (other: Dayjs | null | undefined, includeYear: boo
 }
 
 
-dayjs.prototype.duration = function (other: Dayjs | null | undefined, condesced = true) {
+dayjs.prototype.duration = function (other: DayjsType | null | undefined, condesced = true) {
 
   let granulariy = 0;
   let frame = this;
