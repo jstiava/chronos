@@ -15,8 +15,8 @@
         "moduleResolution": "bundler", // Optional: can change to "node" if issues
         "resolveJsonModule": true,
         "isolatedModules": true,
-        "declaration": true, // <-- emit .d.ts files
-        "declarationDir": "./dist/types", // optional: output types here (or same as outDir)
+        "declaration": true,
+        "declarationDir": "./dist/types",
         "emitDeclarationOnly": false,
         "jsx": "preserve",
         "rootDir": "./src",
