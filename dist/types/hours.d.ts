@@ -17,7 +17,7 @@ export declare enum DAYS {
     SATURDAY = 6
 }
 export declare const getDayString: (dayIndex: number) => "Sun" | "Mon" | "Tue" | "Wed" | "Thu" | "Fri" | "Sat" | undefined;
-export declare const getDayIndex: (dayString: string) => -1 | 7 | DAYS;
+export declare const getDayIndex: (dayString: string) => DAYS | 7 | -1;
 export declare const incrementDay: (day: number) => number;
 export type Segment = {
     start: Chronos;
