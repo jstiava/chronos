@@ -8,7 +8,7 @@ import { ImageStub } from './files';
 import dayjs from './dayjs';
 
 export * from './chronos';
-export * from './dayjs';
+export {dayjs};
 export * from './events';
 export * from './files';
 export * from './groups';
@@ -18,16 +18,12 @@ export * from './locations';
 export * from './profiles';
 export * from './schedules';
 
-
-
 export enum Mode {
   Create = "Create",
   Modify = "Modify",
   Delete = "Delete",
   Copy = "Copy",
 }
-
-
 
 export enum Type {
   Event = "Event",
@@ -38,9 +34,7 @@ export enum Type {
   Schedule = "Schedule"
 }
 
-
 export type MemberData = GroupData & EventData & LocationData;
-
 export interface Member {
     integration?: string | null;
     uuid: string;

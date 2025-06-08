@@ -21,7 +21,7 @@ var __rest = (this && this.__rest) || function (s, e) {
 import { Event } from './events';
 import dayjs from 'dayjs';
 import { DAYS, getDayIndex, getDayString, Hours, incrementDay } from './hours';
-import Chronos from './chronos';
+import { Chronos } from './chronos';
 import { v4 as uuidv4 } from 'uuid';
 import { Type } from '.';
 export var ScheduleType;

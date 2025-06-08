@@ -16,7 +16,7 @@ import dayjs from './dayjs';
 //   is(other: Chronos): boolean;
 //   to(other: Chronos | null, truncate?: number): string;
 // }
-export default class Chronos {
+export class Chronos {
     constructor(num, roundBy24 = true) {
         this.hour = 0;
         if (num === null || num === undefined) {

@@ -1,7 +1,7 @@
 import { Event } from './events';
 import dayjs, { Dayjs } from 'dayjs';
 import { DAYS, getDayIndex, getDayString, Hours, incrementDay } from './hours';
-import Chronos from './chronos';
+import {Chronos} from './chronos';
 import { v4 as uuidv4 } from 'uuid';
 import { Junction } from './junctions';
 import { Type } from '.';

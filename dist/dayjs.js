@@ -5,7 +5,7 @@ import timezone from 'dayjs/plugin/timezone';
 import isBetween from 'dayjs/plugin/isBetween';
 import utc from 'dayjs/plugin/utc';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
-import Chronos from './chronos';
+import { Chronos } from './chronos';
 dayjs.extend(isToday);
 dayjs.extend(utc);
 dayjs.extend(timezone);

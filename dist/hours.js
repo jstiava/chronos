@@ -1,4 +1,4 @@
-import Chronos from './chronos';
+import { Chronos } from './chronos';
 export var DAYS;
 (function (DAYS) {
     DAYS[DAYS["SUNDAY"] = 0] = "SUNDAY";

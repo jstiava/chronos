@@ -1,4 +1,4 @@
-import Chronos from './chronos';
+import {Chronos} from './chronos';
 import dayjs from './dayjs';
 import { ImageStub } from './files';
 import { Dayjs } from 'dayjs';

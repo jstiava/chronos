@@ -19,7 +19,7 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 var _a;
-import Chronos from './chronos';
+import { Chronos } from './chronos';
 import dayjs from './dayjs';
 import { v4 as uuidv4 } from 'uuid';
 import { Type } from '.';

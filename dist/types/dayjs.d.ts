@@ -1,5 +1,5 @@
 import dayjs, { Dayjs as DayjsType } from 'dayjs';
-import Chronos from './chronos';
+import { Chronos } from './chronos';
 declare module 'dayjs' {
     interface Dayjs {
         getTimezoneOffsetInHours(): number;

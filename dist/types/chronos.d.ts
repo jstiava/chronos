@@ -1,5 +1,5 @@
 import dayjs from './dayjs';
-export default class Chronos {
+export declare class Chronos {
     private hour;
     private minute;
     constructor(num?: number | any[], roundBy24?: boolean);

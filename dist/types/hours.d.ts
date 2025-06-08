@@ -1,4 +1,4 @@
-import Chronos from './chronos';
+import { Chronos } from './chronos';
 import { HoursData } from './schedules';
 export interface Hours {
     min: Chronos;

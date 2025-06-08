@@ -1,5 +1,5 @@
 import { Dayjs } from 'dayjs';
-import Chronos from './chronos';
+import {Chronos} from './chronos';
 import { v4 as uuidv4 } from 'uuid';
 import { HoursData } from './schedules';
 

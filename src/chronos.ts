@@ -19,7 +19,7 @@ import dayjs from './dayjs';
 //   to(other: Chronos | null, truncate?: number): string;
 // }
 
-export default class Chronos {
+export class Chronos {
   private hour: number;
   private minute: number;
 
