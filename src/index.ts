@@ -5,10 +5,10 @@ import { LocationData, Location } from './locations';
 import { Profile } from './profiles';
 import axios, { API } from './axios';
 import { ImageStub } from './files';
-import dayjs from './dayjs';
+import dayjs, { Dayjs } from './dayjs';
 
 export * from './chronos';
-export {dayjs};
+export {dayjs, Dayjs};
 export * from './events';
 export * from './files';
 export * from './groups';

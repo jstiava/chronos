@@ -1,4 +1,4 @@
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import isToday from 'dayjs/plugin/isToday';
 import timezone from 'dayjs/plugin/timezone';
@@ -156,4 +156,5 @@ dayjs.prototype.duration = function (other, condesced = true) {
     }
     return result;
 };
+export { Dayjs };
 export default dayjs;

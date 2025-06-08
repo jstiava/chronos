@@ -1,4 +1,4 @@
-import dayjs, { Dayjs as DayjsType } from 'dayjs';
+import dayjs, { Dayjs, Dayjs as DayjsType } from 'dayjs';
 import { Chronos } from './chronos';
 declare module 'dayjs' {
     interface Dayjs {
@@ -32,4 +32,5 @@ declare module 'dayjs' {
         flipMeridium(): DayjsType;
     }
 }
+export { Dayjs };
 export default dayjs;
