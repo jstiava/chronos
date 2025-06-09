@@ -1,4 +1,3 @@
-import dayjs from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import isToday from 'dayjs/plugin/isToday';
 import timezone from 'dayjs/plugin/timezone';
@@ -6,35 +5,37 @@ import isBetween from 'dayjs/plugin/isBetween';
 import utc from 'dayjs/plugin/utc';
 import advancedFormat from 'dayjs/plugin/advancedFormat';
 import { Chronos } from './chronos';
-dayjs.extend(isToday);
-dayjs.extend(utc);
-dayjs.extend(timezone);
-dayjs.extend(isoWeek);
-dayjs.extend(isBetween);
-dayjs.extend(advancedFormat);
-dayjs.tz.setDefault('America/Chicago');
-const belongDayjsPlugin = (option, dayjsClass, dayjsFactory) => {
-    dayjs.prototype.flipMeridium = function () {
+import dayjs from 'dayjs';
+import '../types/dayjs';
+const belongDayjsPlugin = (_option, dayjsClass, factory) => {
+    factory.extend(isToday);
+    factory.extend(utc);
+    factory.extend(timezone);
+    factory.extend(isoWeek);
+    factory.extend(isBetween);
+    factory.extend(advancedFormat);
+    factory.tz.setDefault('America/Chicago');
+    dayjsClass.prototype.flipMeridium = function () {
         const hour = this.hour();
         return hour >= 12 ? this.subtract(12, 'hour') : this.add(12, 'hour');
     };
-    dayjs.prototype.max = function (second) {
+    dayjsClass.prototype.max = function (second) {
         return this.isAfter(second, 'd') ? this : second;
     };
-    dayjs.prototype.min = function (second) {
+    dayjsClass.prototype.min = function (second) {
         return this.isBefore(second, 'd') ? this : second;
     };
-    dayjs.prototype.setTime = function (time) {
+    dayjsClass.prototype.setTime = function (time) {
         return this.set('hour', time.getHour()).set('minute', time.getMinute());
     };
-    dayjs.prototype.getFrame = function (arg1 = 1) {
+    dayjsClass.prototype.getFrame = function (arg1 = 1) {
         const stageDays = [];
         for (let i = 0; i < arg1; i++) {
             stageDays.push(this.add(i, 'day'));
         }
         return stageDays;
     };
-    dayjs.prototype.getDeixis = function (fallback, short = false) {
+    dayjsClass.prototype.getDeixis = function (fallback, short = false) {
         const today = dayjs();
         if (this.isBefore(today, 'day')) {
             return `${!short ? `Past ` : ''}${fallback ? this.format(fallback) : ""}`;
@@ -52,44 +53,44 @@ const belongDayjsPlugin = (option, dayjsClass, dayjsFactory) => {
             return short ? this.format("ddd") : `This ${this.format('dddd')}`;
         }
         if (this.isSame(today.add(1, 'week'), 'week')) {
-            return short ? this.format(fallback) : `Next ${this.format('dddd')}`;
+            return short && fallback ? this.format(fallback) : `Next ${this.format('dddd')}`;
         }
         if (!fallback) {
             return "";
         }
         return this.format(fallback);
     };
-    dayjs.prototype.getTimezoneOffsetInHours = function () {
+    dayjsClass.prototype.getTimezoneOffsetInHours = function () {
         return this.utcOffset() / 60;
     };
-    dayjs.prototype.getTimezoneName = function () {
-        return this.tz.guess();
+    dayjsClass.prototype.getTimezoneName = function () {
+        return factory.tz.guess();
     };
-    dayjs.prototype.yyyymmdd = function () {
+    dayjsClass.prototype.yyyymmdd = function () {
         return Number(this.format("YYYYMMDD"));
     };
-    dayjs.prototype.asNumber = function () {
+    dayjsClass.prototype.asNumber = function () {
         return Number(this.format("YYYYMMDD"));
     };
-    dayjs.prototype.toChronos = function () {
+    dayjsClass.prototype.toChronos = function () {
         const hour = this.hour();
         const minute = this.minute();
         return new Chronos(hour + minute / 60);
     };
-    dayjs.prototype.toLocalChronos = function () {
+    dayjsClass.prototype.toLocalChronos = function () {
         const hour = this.hour();
         const minute = this.minute();
         return new Chronos(hour + minute / 60);
     };
-    dayjs.prototype.isYesterday = function () {
+    dayjsClass.prototype.isYesterday = function () {
         const yesterday = dayjs().add(1, 'day');
         return this.isSame(yesterday, 'day');
     };
-    dayjs.prototype.isTomorrow = function () {
+    dayjsClass.prototype.isTomorrow = function () {
         const tmmrw = dayjs().subtract(1, 'day');
         return this.isSame(tmmrw, 'day');
     };
-    dayjs.prototype.isInDayView = function (threshold) {
+    dayjsClass.prototype.isInDayView = function (threshold) {
         if (this.isToday()) {
             return dayjs().hour() >= threshold;
         }
@@ -99,7 +100,7 @@ const belongDayjsPlugin = (option, dayjsClass, dayjsFactory) => {
         ;
         return false;
     };
-    dayjs.prototype.to = function (other, includeYear = false, format = {
+    dayjsClass.prototype.to = function (other, includeYear = false, format = {
         month: "",
         day: "",
         year: ""
@@ -118,7 +119,7 @@ const belongDayjsPlugin = (option, dayjsClass, dayjsFactory) => {
         }
         return `${this.format(`${month} ${day}, ${year}`)}—${other.format(`${month} ${day}, ${year}`)}`;
     };
-    dayjs.prototype.duration = function (other, condesced = true) {
+    dayjsClass.prototype.duration = function (other, condesced = true) {
         let granulariy = 0;
         let frame = this;
         const years = frame.diff(other, 'y');
@@ -158,4 +159,5 @@ const belongDayjsPlugin = (option, dayjsClass, dayjsFactory) => {
         return result;
     };
 };
+dayjs.extend(belongDayjsPlugin);
 export default dayjs;
