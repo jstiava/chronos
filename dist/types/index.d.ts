@@ -6,7 +6,7 @@ import { Profile } from './profiles';
 import { ImageStub } from './files';
 export * from './chronos';
 export { default as dayjs } from './dayjs';
-export type { Dayjs } from 'dayjs';
+export type { Dayjs } from './dayjs';
 export * from './events';
 export * from './files';
 export * from './groups';

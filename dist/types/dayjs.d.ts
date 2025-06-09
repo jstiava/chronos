@@ -27,4 +27,6 @@ declare module 'dayjs' {
         flipMeridium(): DayjsType;
     }
 }
+
 export default dayjs;
+export type { Dayjs } from 'dayjs';

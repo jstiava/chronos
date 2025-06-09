@@ -254,4 +254,7 @@ const belongDayjsPlugin: PluginFunc<unknown> = (_option, dayjsClass, factory) =>
 
 dayjs.extend(belongDayjsPlugin);
 
+
+
 export default dayjs;
+export type { Dayjs } from 'dayjs';
