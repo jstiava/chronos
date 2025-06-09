@@ -230,10 +230,10 @@ export class Hours {
     }
 
     let i = 0;
-    const newSegments = [];
+    const newSegments: Segment[] = [];
     const segments = this.toSegments();
 
-    let current = null;
+    let current : Segment | null = null;
     for (i = 0; i < segments.length; i++) {
       current = segments[i];
       // A-M
@@ -291,7 +291,7 @@ export class Hours {
       newSegments.push(current);
     }
 
-    const result = [];
+    const result : Chronos[] = [];
     for (const seg of newSegments) {
       result.push(seg.start);
       result.push(seg.end);
@@ -312,10 +312,10 @@ export class Hours {
     }
 
     let i = 0;
-    const newSegments = [];
+    const newSegments : Segment[] = [];
     const segments = this.toSegments();
 
-    let current = null;
+    let current : Segment | null = null;
     for (i = 0; i < segments.length; i++) {
       current = segments[i];
       // A-M
@@ -370,7 +370,7 @@ export class Hours {
       newSegments.push(current);
     }
 
-    const result = [];
+    const result : Chronos[] = [];
     for (const seg of newSegments) {
       result.push(seg.start);
       result.push(seg.end);
@@ -409,7 +409,7 @@ export class Hours {
     }
     merged.push(current);
 
-    const result = [];
+    const result : Chronos[] = [];
     for (const seg of merged) {
       result.push(seg.start);
       result.push(seg.end);

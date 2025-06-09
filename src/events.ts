@@ -300,7 +300,7 @@ export class Events {
       }
     })
       .then((res : any) => {
-        let searchResults = [];
+        let searchResults : Event[] = [];
         for (const event of res.data.candidates) {
           searchResults.push(new Event(event).localize());
         }

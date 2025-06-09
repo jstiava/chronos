@@ -1,4 +1,3 @@
-import { Dayjs } from 'dayjs';
 import dayjs from './dayjs';
 
 // export default interface Chronos {
@@ -20,10 +19,8 @@ import dayjs from './dayjs';
 // }
 
 export class Chronos {
-  private hour: number;
-  private minute: number;
-
-  
+  public hour: number;
+  public minute: number;
 
   constructor(num?: number | any[], roundBy24: boolean = true) {
     this.hour = 0;

@@ -173,7 +173,7 @@ MemberFactory.getToken = (that) => {
     return that.token;
 };
 MemberFactory.collect_media = (self) => {
-    if (!self) {
+    if (!self || !('cover_img' in self)) {
         return [];
     }
     let result = [];
@@ -183,8 +183,8 @@ MemberFactory.collect_media = (self) => {
     if ('icon_img' in self && self.icon_img) {
         result.push(self.icon_img);
     }
-    if ('wordmark_img' in self && self.icon_img) {
-        result.push(self.icon_img);
+    if ('wordmark_img' in self && self.wordmark_img) {
+        result.push(self.wordmark_img);
     }
     return result;
 };

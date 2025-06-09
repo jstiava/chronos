@@ -1,7 +1,7 @@
 import dayjs from './dayjs';
 export declare class Chronos {
-    private hour;
-    private minute;
+    hour: number;
+    minute: number;
     constructor(num?: number | any[], roundBy24?: boolean);
     setHour(num?: number, roundBy24?: boolean): void;
     setMinute(num?: number): void;

@@ -85,7 +85,7 @@ const belongDayjsPlugin: PluginFunc<unknown> = (_option, dayjsClass, factory) =>
 
   dayjsClass.prototype.getFrame = function (arg1: number = 1): Dayjs[] {
 
-    const stageDays = [];
+    const stageDays : Dayjs[] = [];
 
     for (let i = 0; i < arg1; i++) {
       stageDays.push(this.add(i, 'day'));

@@ -1,3 +1,4 @@
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -18,19 +19,23 @@ var __rest = (this && this.__rest) || function (s, e) {
         }
     return t;
 };
-import { Event } from './events';
-import dayjs from 'dayjs';
-import { DAYS, getDayIndex, getDayString, Hours, incrementDay } from './hours';
-import { Chronos } from './chronos';
-import { v4 as uuidv4 } from 'uuid';
-import { Type } from '.';
-export var ScheduleType;
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.Schedule = exports.ScheduleType = void 0;
+const events_1 = require("./events");
+const dayjs_1 = __importDefault(require("dayjs"));
+const hours_1 = require("./hours");
+const uuid_1 = require("uuid");
+const _1 = require("./");
+var ScheduleType;
 (function (ScheduleType) {
     ScheduleType["Regular"] = "regular";
     ScheduleType["Special"] = "special";
     ScheduleType["Closure"] = "closure";
-})(ScheduleType || (ScheduleType = {}));
-export class Schedule {
+})(ScheduleType || (exports.ScheduleType = ScheduleType = {}));
+class Schedule {
     id() {
         return this.uuid;
     }
@@ -38,7 +43,7 @@ export class Schedule {
         return 'schedule_id';
     }
     getType() {
-        return Type.Schedule;
+        return _1.Type.Schedule;
     }
     login() {
         return null;
@@ -48,7 +53,7 @@ export class Schedule {
     }
     // Unlike other Member classes, schedule's connectTo affects the instance pointers
     connectTo(other) {
-        if (other instanceof Event) {
+        if (other instanceof events_1.Event) {
             this.event_id = other.id();
             return null;
         }
@@ -72,7 +77,7 @@ export class Schedule {
     getHoursPerWeek() {
         let value = 0;
         this.days.forEach((day, index) => {
-            const hour = this.getHours(index, new Chronos(12));
+            const hour = this.getHours(index, new _1.Chronos(12));
             if (typeof hour === 'boolean') {
                 value += hour ? 24 : 0;
             }
@@ -100,10 +105,10 @@ export class Schedule {
         let result = "";
         let pointer = 1;
         let active = this.days[0];
-        let daysString = getDayString(DAYS.SUNDAY);
+        let daysString = (0, hours_1.getDayString)(hours_1.DAYS.SUNDAY);
         while (pointer < 8) {
             if (active != this.days[pointer] || pointer === 7) {
-                const endDayString = getDayString(pointer - 1);
+                const endDayString = (0, hours_1.getDayString)(pointer - 1);
                 if (daysString === "Sun" && pointer === 7) {
                     result += 'Daily';
                 }
@@ -123,9 +128,9 @@ export class Schedule {
                     console.log({
                         result, pointer, active, daysString, endDayString
                     });
-                    result += `: ${this.hours[active - Hours.HOURS_LOCATOR_PREFIX].to_string()}\n`;
+                    result += `: ${this.hours[active - hours_1.Hours.HOURS_LOCATOR_PREFIX].to_string()}\n`;
                 }
-                daysString = getDayString(pointer);
+                daysString = (0, hours_1.getDayString)(pointer);
                 active = this.days[pointer];
             }
             pointer += 1;
@@ -190,12 +195,12 @@ export class Schedule {
      * @returns
      */
     removeHoursOnDay(day) {
-        const pointer = typeof day === "number" ? day : getDayIndex(day);
+        const pointer = typeof day === "number" ? day : (0, hours_1.getDayIndex)(day);
         if (pointer == -1) {
             throw Error("Can't find date that matches");
         }
         const copy = this.days[pointer];
-        this.days[pointer] = Hours.CLOSED;
+        this.days[pointer] = hours_1.Hours.CLOSED;
         if (copy < 2) {
             // Closed or open
             return;
@@ -224,17 +229,17 @@ export class Schedule {
      * @returns
      */
     replaceHoursOnDayWith(day, newHours) {
-        const pointer = typeof day === "number" ? day : getDayIndex(day);
+        const pointer = typeof day === "number" ? day : (0, hours_1.getDayIndex)(day);
         if (pointer == -1) {
             throw Error("Can't find date that matches");
         }
         const hoursOfDayPointer = this.days[pointer];
         if (typeof newHours === "boolean") {
-            if (hoursOfDayPointer === Hours.OPEN || hoursOfDayPointer === Hours.CLOSED) {
-                this.days[pointer] = newHours ? Hours.OPEN : Hours.CLOSED;
+            if (hoursOfDayPointer === hours_1.Hours.OPEN || hoursOfDayPointer === hours_1.Hours.CLOSED) {
+                this.days[pointer] = newHours ? hours_1.Hours.OPEN : hours_1.Hours.CLOSED;
                 return;
             }
-            if (hoursOfDayPointer > Hours.OPEN) {
+            if (hoursOfDayPointer > hours_1.Hours.OPEN) {
                 const count = this.days.filter(d => d === hoursOfDayPointer).length;
                 if (count <= 1) {
                     this.removeHoursOnDay(day);
@@ -242,17 +247,17 @@ export class Schedule {
             }
             return;
         }
-        if (hoursOfDayPointer > Hours.OPEN) {
+        if (hoursOfDayPointer > hours_1.Hours.OPEN) {
             const count = this.days.filter(d => d === hoursOfDayPointer).length;
             if (count <= 1) {
                 this.removeHoursOnDay(day);
             }
         }
         const index = this.hours.push(newHours) - 1;
-        this.days[pointer] = index + Hours.HOURS_LOCATOR_PREFIX;
+        this.days[pointer] = index + hours_1.Hours.HOURS_LOCATOR_PREFIX;
     }
-    getHours(day = dayjs().day(), time = new Chronos(12)) {
-        const pointer = typeof day === "number" ? day : getDayIndex(day);
+    getHours(day = (0, dayjs_1.default)().day(), time = new _1.Chronos(12)) {
+        const pointer = typeof day === "number" ? day : (0, hours_1.getDayIndex)(day);
         if (pointer == -1) {
             throw Error("Can't find date that matches");
         }
@@ -261,37 +266,37 @@ export class Schedule {
             const yesturdayPointer = pointer === 0 ? 6 : pointer - 1;
             const hoursOfYesturdayPointer = this.days[yesturdayPointer];
             if (hoursOfYesturdayPointer > 1) {
-                const hoursOfYstrday = this.hours[hoursOfYesturdayPointer - Hours.HOURS_LOCATOR_PREFIX];
+                const hoursOfYstrday = this.hours[hoursOfYesturdayPointer - hours_1.Hours.HOURS_LOCATOR_PREFIX];
                 if (hoursOfYstrday.isOpen(time.add(24, false))) {
                     return hoursOfYstrday;
                 }
             }
         }
         const hoursOfDayPointer = this.days[pointer];
-        if (hoursOfDayPointer === Hours.OPEN) {
+        if (hoursOfDayPointer === hours_1.Hours.OPEN) {
             return true;
         }
-        if (hoursOfDayPointer === Hours.CLOSED) {
+        if (hoursOfDayPointer === hours_1.Hours.CLOSED) {
             return false;
         }
-        const hoursOfDay = this.hours[hoursOfDayPointer - Hours.HOURS_LOCATOR_PREFIX];
+        const hoursOfDay = this.hours[hoursOfDayPointer - hours_1.Hours.HOURS_LOCATOR_PREFIX];
         return hoursOfDay;
     }
     // Lacks specificity
-    getNextOccurance(day = dayjs()) {
+    getNextOccurance(day = (0, dayjs_1.default)()) {
         let count = 0;
         for (let pointer = day; count < 8; count++) {
             const hoursOfDayPointer = this.days[pointer.day()];
-            if (hoursOfDayPointer === Hours.OPEN) {
+            if (hoursOfDayPointer === hours_1.Hours.OPEN) {
                 return {
                     date: pointer,
                     start_time: null
                 };
             }
-            if (hoursOfDayPointer === Hours.CLOSED) {
+            if (hoursOfDayPointer === hours_1.Hours.CLOSED) {
                 continue;
             }
-            const hoursOfDay = this.hours[hoursOfDayPointer - Hours.HOURS_LOCATOR_PREFIX];
+            const hoursOfDay = this.hours[hoursOfDayPointer - hours_1.Hours.HOURS_LOCATOR_PREFIX];
             return {
                 date: pointer,
                 start_time: hoursOfDay.getMin()
@@ -299,9 +304,9 @@ export class Schedule {
         }
         return null;
     }
-    isOpen(day = dayjs().day(), time = dayjs().toLocalChronos()) {
+    isOpen(day = (0, dayjs_1.default)().day(), time = (0, dayjs_1.default)().toLocalChronos()) {
         let pointer = null;
-        pointer = typeof day === 'string' ? getDayIndex(day) : day;
+        pointer = typeof day === 'string' ? (0, hours_1.getDayIndex)(day) : day;
         if (pointer == -1) {
             throw Error("Can't find date that matches");
         }
@@ -310,7 +315,7 @@ export class Schedule {
             const yesturdayPointer = pointer === 0 ? 6 : pointer - 1;
             const hoursOfYesturdayPointer = this.days[yesturdayPointer];
             if (hoursOfYesturdayPointer > 1) {
-                const hoursOfYstrday = this.hours[hoursOfYesturdayPointer - Hours.HOURS_LOCATOR_PREFIX];
+                const hoursOfYstrday = this.hours[hoursOfYesturdayPointer - hours_1.Hours.HOURS_LOCATOR_PREFIX];
                 if (hoursOfYstrday.isOpen(time.add(24, false))) {
                     return true;
                 }
@@ -318,34 +323,34 @@ export class Schedule {
         }
         // Evaluate same date
         const hoursOfDayPointer = this.days[pointer];
-        if (hoursOfDayPointer === Hours.OPEN)
+        if (hoursOfDayPointer === hours_1.Hours.OPEN)
             return true;
-        if (hoursOfDayPointer === Hours.CLOSED)
+        if (hoursOfDayPointer === hours_1.Hours.CLOSED)
             return false;
-        const hoursOfDay = this.hours[hoursOfDayPointer - Hours.HOURS_LOCATOR_PREFIX];
+        const hoursOfDay = this.hours[hoursOfDayPointer - hours_1.Hours.HOURS_LOCATOR_PREFIX];
         return hoursOfDay.isOpen(time);
     }
     print(day) {
         let pointer = null;
-        pointer = typeof day === 'string' ? getDayIndex(day) : day;
+        pointer = typeof day === 'string' ? (0, hours_1.getDayIndex)(day) : day;
         if (pointer == -1) {
             // throw Error("Can't find date that matches");
             return "No Hours / Closed";
         }
         const hoursOfDayPointer = this.days[pointer];
-        if (hoursOfDayPointer === Hours.OPEN) {
+        if (hoursOfDayPointer === hours_1.Hours.OPEN) {
             return "Open 24/7";
         }
-        if (hoursOfDayPointer === Hours.CLOSED) {
+        if (hoursOfDayPointer === hours_1.Hours.CLOSED) {
             return "Closed";
         }
-        const hoursOfDay = this.hours[hoursOfDayPointer - Hours.HOURS_LOCATOR_PREFIX];
+        const hoursOfDay = this.hours[hoursOfDayPointer - hours_1.Hours.HOURS_LOCATOR_PREFIX];
         return hoursOfDay.to_string();
     }
-    isOpenWithContext(day = dayjs().day(), time) {
+    isOpenWithContext(day = (0, dayjs_1.default)().day(), time) {
         let pointer = null;
         if (typeof day === "string") {
-            pointer = getDayIndex(day);
+            pointer = (0, hours_1.getDayIndex)(day);
         }
         else {
             pointer = day;
@@ -361,27 +366,27 @@ export class Schedule {
             const yesturdayPointer = pointer === 0 ? 7 : pointer - 1;
             const hoursOfYesturdayPointer = this.days[yesturdayPointer];
             if (hoursOfYesturdayPointer > 1) {
-                const hoursOfYstrday = this.hours[hoursOfYesturdayPointer - Hours.HOURS_LOCATOR_PREFIX];
+                const hoursOfYstrday = this.hours[hoursOfYesturdayPointer - hours_1.Hours.HOURS_LOCATOR_PREFIX];
                 if (hoursOfYstrday.isOpen(time.add(24, false))) {
                     return hoursOfYstrday.isOpenWithContext(time.add(24, false));
                 }
             }
         }
         const hoursOfDayPointer = this.days[pointer];
-        if (hoursOfDayPointer === Hours.OPEN) {
+        if (hoursOfDayPointer === hours_1.Hours.OPEN) {
             return {
                 isOpen: true,
                 context: "Open All Day"
             };
         }
-        if (hoursOfDayPointer === Hours.CLOSED) {
+        if (hoursOfDayPointer === hours_1.Hours.CLOSED) {
             return {
                 isOpen: false,
                 context: "Closed"
             };
         }
         try {
-            const hoursOfDay = this.hours[hoursOfDayPointer - Hours.HOURS_LOCATOR_PREFIX];
+            const hoursOfDay = this.hours[hoursOfDayPointer - hours_1.Hours.HOURS_LOCATOR_PREFIX];
             return hoursOfDay.isOpenWithContext(time);
         }
         catch (err) {
@@ -414,21 +419,21 @@ export class Schedule {
         this.writeAndMovePointer = (pointer, goto, value) => {
             this.days[pointer] = value;
             while (pointer !== goto) {
-                pointer = incrementDay(pointer);
+                pointer = (0, hours_1.incrementDay)(pointer);
                 this.days[pointer] = value;
             }
             return pointer;
         };
         this.spreadHoursMappingIntoDays = (text, value) => {
-            let pointer = DAYS.SUNDAY;
+            let pointer = hours_1.DAYS.SUNDAY;
             let writeMode = false;
-            const daysScheduleRegex = new RegExp(Hours.DAY_PATTERN, 'ig');
+            const daysScheduleRegex = new RegExp(hours_1.Hours.DAY_PATTERN, 'ig');
             const matches = [...text.matchAll(daysScheduleRegex)];
             for (const match of matches) {
-                const isComma = match[Hours.ISOLATED_COMMA_IN_PATTERN];
-                const day = getDayIndex(match[Hours.ISOLATED_DAY_IN_PATTERN]);
+                const isComma = match[hours_1.Hours.ISOLATED_COMMA_IN_PATTERN];
+                const day = (0, hours_1.getDayIndex)(match[hours_1.Hours.ISOLATED_DAY_IN_PATTERN]);
                 if (day === -1) {
-                    console.log('Could not find date', match[Hours.ISOLATED_DAY_IN_PATTERN]);
+                    console.log('Could not find date', match[hours_1.Hours.ISOLATED_DAY_IN_PATTERN]);
                     return;
                 }
                 if (day === 7) {
@@ -450,7 +455,7 @@ export class Schedule {
             return;
         };
         this.getStringForDay = (day) => {
-            const theHours = this.getHours(day, new Chronos(12));
+            const theHours = this.getHours(day, new _1.Chronos(12));
             if (typeof theHours === "boolean") {
                 return theHours ? "Open 24/7" : "Closed";
             }
@@ -458,7 +463,7 @@ export class Schedule {
         };
         this.mask = (other) => {
             const hours = this.getHours(other.dow);
-            const theMask = new Hours(other.start_time.getHMN(), other.end_time.getHMN());
+            const theMask = new hours_1.Hours(other.start_time.getHMN(), other.end_time.getHMN());
             if (typeof hours === 'boolean') {
                 this.replaceHoursOnDayWith(other.dow, theMask);
                 return;
@@ -468,7 +473,7 @@ export class Schedule {
         };
         this.unmask = (other) => {
             const hours = this.getHours(other.dow);
-            const theMask = new Hours(other.start_time.getHMN(), other.end_time.getHMN());
+            const theMask = new hours_1.Hours(other.start_time.getHMN(), other.end_time.getHMN());
             if (typeof hours === 'boolean') {
                 this.replaceHoursOnDayWith(other.dow, theMask);
                 return;
@@ -477,7 +482,7 @@ export class Schedule {
             return;
         };
         this.add = (other, subtract = false) => {
-            const copy = new Schedule(Object.assign(Object.assign({}, this.eject()), { uuid: String(uuidv4()), name: "Close Early" }));
+            const copy = new Schedule(Object.assign(Object.assign({}, this.eject()), { uuid: String((0, uuid_1.v4)()), name: "Close Early" }));
             if (!other.start_time || !other.end_time || !other.date) {
                 throw Error("Need start and end timing and at least one date.");
             }
@@ -510,7 +515,7 @@ export class Schedule {
             return this.add(other, true);
         };
         this.union = (other) => {
-            if (other instanceof Event) {
+            if (other instanceof events_1.Event) {
                 if (!other.date || !other.start_time || !other.end_time) {
                     throw Error("Usage. Need a date, start and end time.");
                 }
@@ -522,12 +527,12 @@ export class Schedule {
             for (const day of [0, 1, 2, 3, 4, 5, 6]) {
                 const ours = this.days[day];
                 const theirs = other.days[day];
-                if (ours === Hours.OPEN || theirs === Hours.OPEN) {
-                    result.days[day] = Hours.OPEN;
+                if (ours === hours_1.Hours.OPEN || theirs === hours_1.Hours.OPEN) {
+                    result.days[day] = hours_1.Hours.OPEN;
                     continue;
                 }
-                if (ours === Hours.CLOSED && theirs === Hours.CLOSED) {
-                    result.days[day] = Hours.CLOSED;
+                if (ours === hours_1.Hours.CLOSED && theirs === hours_1.Hours.CLOSED) {
+                    result.days[day] = hours_1.Hours.CLOSED;
                     continue;
                 }
                 if (!other.getHours(day)) {
@@ -563,16 +568,16 @@ export class Schedule {
                 hoursIndex += 1;
             }
             result.as_text = result.toString();
-            result.start_date = result.start_date || dayjs();
+            result.start_date = result.start_date || (0, dayjs_1.default)();
             return result;
         };
         this.junctions = new Map();
         this.metadata = {};
         this.theme_color = null;
-        this.type = Type.Schedule;
+        this.type = _1.Type.Schedule;
         this.days = [0, 0, 0, 0, 0, 0, 0];
         if (arguments.length === 0) {
-            this.uuid = String(uuidv4());
+            this.uuid = String((0, uuid_1.v4)());
             this.as_text = 'placeholder';
             this.name = 'Regular Hours';
             this.schedule_type = "regular";
@@ -590,15 +595,16 @@ export class Schedule {
             return new Schedule(theCopy, true);
         }
         Object.assign(this, data);
-        this.start_date = data.start_date ? dayjs(String(data.start_date)) : dayjs();
-        this.end_date = data.end_date ? dayjs(String(data.end_date)) : null;
+        this.start_date = data.start_date ? (0, dayjs_1.default)(String(data.start_date)) : (0, dayjs_1.default)();
+        this.end_date = data.end_date ? (0, dayjs_1.default)(String(data.end_date)) : null;
         this.hours = data.hours ? data.hours.map((hour) => {
-            return new Hours(hour.min, hour.max, hour.breaks, 0);
+            return new hours_1.Hours(hour.min, hour.max, hour.breaks, 0);
         }) : [];
         this.is_local = is_local;
     }
     ;
 }
+exports.Schedule = Schedule;
 Schedule.createOffDrag = (startDate, endDate, startTime, endTime) => {
     const self = new Schedule();
     self.start_date = startDate;
@@ -607,11 +613,11 @@ Schedule.createOffDrag = (startDate, endDate, startTime, endTime) => {
     const diff = endDate ? endDate.diff(startDate, 'day') : 7;
     let pointer = start_date_index;
     for (let counter = 0; counter <= diff; counter += 1) {
-        self.days[pointer] = Hours.HOURS_LOCATOR_PREFIX;
-        pointer = incrementDay(pointer);
+        self.days[pointer] = hours_1.Hours.HOURS_LOCATOR_PREFIX;
+        pointer = (0, hours_1.incrementDay)(pointer);
     }
     try {
-        const newHours = new Hours(startTime.getHMN(), endTime.getHMN());
+        const newHours = new hours_1.Hours(startTime.getHMN(), endTime.getHMN());
         self.hours.push(newHours);
         self.as_text = self.to_string();
     }
@@ -634,7 +640,7 @@ Schedule.create = (name, type, rawString, startDate, endDate) => {
     self.hours = [];
     self.start_date = startDate;
     self.end_date = endDate || null;
-    const combinedScheduleRegex = new RegExp(Hours.COMBINED_SCHEDULE_SPLIT_PATTERN, 'gi');
+    const combinedScheduleRegex = new RegExp(hours_1.Hours.COMBINED_SCHEDULE_SPLIT_PATTERN, 'gi');
     const matches = [...rawString.matchAll(combinedScheduleRegex)];
     if (self.schedule_type === ScheduleType.Closure) {
         return self;
@@ -646,15 +652,15 @@ Schedule.create = (name, type, rawString, startDate, endDate) => {
             continue;
         try {
             if (match.groups.times.includes('Open')) {
-                self.spreadHoursMappingIntoDays(match.groups.days, Hours.OPEN);
+                self.spreadHoursMappingIntoDays(match.groups.days, hours_1.Hours.OPEN);
                 continue;
             }
             if (match.groups.times.includes('Closed')) {
-                self.spreadHoursMappingIntoDays(match.groups.days, Hours.CLOSED);
+                self.spreadHoursMappingIntoDays(match.groups.days, hours_1.Hours.CLOSED);
                 continue;
             }
-            self.hours.push(new Hours(match.groups.times));
-            self.spreadHoursMappingIntoDays(match.groups.days, Hours.HOURS_LOCATOR_PREFIX + self.hours.length - 1);
+            self.hours.push(new hours_1.Hours(match.groups.times));
+            self.spreadHoursMappingIntoDays(match.groups.days, hours_1.Hours.HOURS_LOCATOR_PREFIX + self.hours.length - 1);
         }
         catch (err) {
             console.log(err);

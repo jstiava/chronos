@@ -1,10 +1,9 @@
 import { Event } from './events';
 import dayjs, { Dayjs } from 'dayjs';
 import { DAYS, getDayIndex, getDayString, Hours, incrementDay } from './hours';
-import {Chronos} from './chronos';
 import { v4 as uuidv4 } from 'uuid';
 import { Junction } from './junctions';
-import { Type } from '.';
+import { Chronos, Type } from './';
 import { Member } from './index';
 
 export enum ScheduleType {
@@ -398,7 +397,7 @@ export class Schedule implements Member {
     }
 
     isOpen(day: string | number = dayjs().day(), time: Chronos = dayjs().toLocalChronos()): boolean {
-        let pointer = null;
+        let pointer : any | null = null;
 
         pointer = typeof day === 'string' ? getDayIndex(day) : day as number;
 
@@ -427,7 +426,7 @@ export class Schedule implements Member {
     }
 
     print(day: string | number): string {
-        let pointer = null;
+        let pointer : any | null = null;
 
         pointer = typeof day === 'string' ? getDayIndex(day) : day as number;
         if (pointer == -1) {
@@ -450,7 +449,7 @@ export class Schedule implements Member {
     }
 
     isOpenWithContext(day: string | number = dayjs().day(), time?: Chronos): { isOpen: boolean, context: string } {
-        let pointer = null;
+        let pointer : any | null = null;
 
         if (typeof day === "string") {
             pointer = getDayIndex(day)
@@ -652,7 +651,7 @@ export class Schedule implements Member {
 
         const result = new Schedule();
         let hoursIndex = 2;
-        let resultHours = null;
+        let resultHours : Hours | boolean | null = null;
 
         for (const day of [0, 1, 2, 3, 4, 5, 6]) {
             const ours = this.days[day];

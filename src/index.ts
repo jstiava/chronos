@@ -185,13 +185,19 @@ export class MemberFactory {
             })
     }
 
-    static collect_media = (self: MemberData | Member | null): ImageStub[] => {
+    static collect_media = (self: {
+        [key: string]: any,
+        cover_img?: ImageStub,
+        icon_img?: ImageStub,
+        wordmark_img?: ImageStub
+    }): ImageStub[] => {
 
-        if (!self) {
+        if (!self || !('cover_img' in self)) {
             return [];
         }
 
-        let result = [];
+
+        let result : ImageStub[] = [];
 
         if ('cover_img' in self && self.cover_img) {
             result.push(self.cover_img)
@@ -201,8 +207,8 @@ export class MemberFactory {
             result.push(self.icon_img)
         }
 
-        if ('wordmark_img' in self && self.icon_img) {
-            result.push(self.icon_img)
+        if ('wordmark_img' in self && self.wordmark_img) {
+            result.push(self.wordmark_img)
         }
 
         return result;

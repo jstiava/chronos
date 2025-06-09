@@ -1,9 +1,8 @@
 import { Event } from './events';
 import { Dayjs } from 'dayjs';
 import { Hours } from './hours';
-import { Chronos } from './chronos';
 import { Junction } from './junctions';
-import { Type } from '.';
+import { Chronos, Type } from './';
 import { Member } from './index';
 export declare enum ScheduleType {
     Regular = "regular",

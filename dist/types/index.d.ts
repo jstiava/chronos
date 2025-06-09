@@ -62,7 +62,12 @@ export declare class MemberFactory {
         isAcquired: boolean;
         message: string;
     }>;
-    static collect_media: (self: MemberData | Member | null) => ImageStub[];
+    static collect_media: (self: {
+        [key: string]: any;
+        cover_img?: ImageStub;
+        icon_img?: ImageStub;
+        wordmark_img?: ImageStub;
+    }) => ImageStub[];
     static create(type: Type, ...args: any[]): Member;
     static isMember(target: any): boolean;
 }
