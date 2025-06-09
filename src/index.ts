@@ -5,10 +5,10 @@ import { LocationData, Location } from './locations';
 import { Profile } from './profiles';
 import axios, { API } from './axios';
 import { ImageStub } from './files';
-import dayjs, { Dayjs } from './dayjs';
 
 export * from './chronos';
-export {dayjs, Dayjs};
+export { default as dayjs } from './dayjs';
+export type { Dayjs } from 'dayjs';
 export * from './events';
 export * from './files';
 export * from './groups';
@@ -19,19 +19,19 @@ export * from './profiles';
 export * from './schedules';
 
 export enum Mode {
-  Create = "Create",
-  Modify = "Modify",
-  Delete = "Delete",
-  Copy = "Copy",
+    Create = "Create",
+    Modify = "Modify",
+    Delete = "Delete",
+    Copy = "Copy",
 }
 
 export enum Type {
-  Event = "Event",
-  Location = "Location",
-  Profile = "Profile",
-  Group = "Group",
-  Custom = "Custom",
-  Schedule = "Schedule"
+    Event = "Event",
+    Location = "Location",
+    Profile = "Profile",
+    Group = "Group",
+    Custom = "Custom",
+    Schedule = "Schedule"
 }
 
 export type MemberData = GroupData & EventData & LocationData;

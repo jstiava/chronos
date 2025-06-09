@@ -1,4 +1,4 @@
-import dayjs, { Dayjs, Dayjs as DayjsType } from 'dayjs';
+import dayjs, { Dayjs as DayjsType } from 'dayjs';
 import isoWeek from 'dayjs/plugin/isoWeek';
 import isToday from 'dayjs/plugin/isToday';
 import timezone from 'dayjs/plugin/timezone';
@@ -49,6 +49,9 @@ declare module 'dayjs' {
     flipMeridium(): DayjsType;
   }
 }
+
+
+const belongDayjsPlugin = (option: unknown, dayjsClass: typeof dayjs, dayjsFactory: typeof dayjs) => {
 
 dayjs.prototype.flipMeridium = function () {
   const hour = this.hour();
@@ -240,6 +243,7 @@ dayjs.prototype.duration = function (other: DayjsType | null | undefined, condes
 }
 
 
+}
 
-export { Dayjs }
+
 export default dayjs;
