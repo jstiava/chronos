@@ -7,6 +7,13 @@ import advancedFormat from 'dayjs/plugin/advancedFormat';
 import { Chronos } from './chronos';
 import dayjs from 'dayjs';
 import '../types/dayjs';
+dayjs.extend(isToday);
+dayjs.extend(utc);
+dayjs.extend(timezone);
+dayjs.extend(isoWeek);
+dayjs.extend(isBetween);
+dayjs.extend(advancedFormat);
+dayjs.tz.setDefault('America/Chicago');
 const belongDayjsPlugin = (_option, dayjsClass, factory) => {
     factory.extend(isToday);
     factory.extend(utc);
