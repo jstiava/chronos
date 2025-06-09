@@ -8,7 +8,13 @@ import { Chronos } from './chronos';
 import type { PluginFunc } from 'dayjs';
 import type { Dayjs, Dayjs as DayjsType } from 'dayjs';
 import dayjs from 'dayjs';
-import '../types/dayjs';
+
+import 'dayjs/plugin/isoWeek';
+import 'dayjs/plugin/isToday';
+import 'dayjs/plugin/timezone';
+import 'dayjs/plugin/isBetween';
+import 'dayjs/plugin/utc';
+import 'dayjs/plugin/advancedFormat';
 
 dayjs.extend(isToday);
 dayjs.extend(utc);

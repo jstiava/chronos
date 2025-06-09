@@ -1,7 +1,12 @@
 import { Chronos } from './chronos';
 import type { Dayjs as DayjsType } from 'dayjs';
 import dayjs from 'dayjs';
-import '../types/dayjs';
+import 'dayjs/plugin/isoWeek';
+import 'dayjs/plugin/isToday';
+import 'dayjs/plugin/timezone';
+import 'dayjs/plugin/isBetween';
+import 'dayjs/plugin/utc';
+import 'dayjs/plugin/advancedFormat';
 declare module 'dayjs' {
     interface Dayjs {
         getTimezoneOffsetInHours(): number;
@@ -27,6 +32,5 @@ declare module 'dayjs' {
         flipMeridium(): DayjsType;
     }
 }
-
 export default dayjs;
 export type { Dayjs } from 'dayjs';
