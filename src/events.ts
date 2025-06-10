@@ -829,7 +829,7 @@ export class Event implements Member {
   }
 
 
-  localize(globalize = false): Event {
+  localize(timezone = 'America/Chicago', globalize = false): Event {
     if (this.is_local === !globalize) {
       console.log({
         globalize,
@@ -843,20 +843,19 @@ export class Event implements Member {
     if (isMultiDayEvent(this) || isAllSingleDay(this)) {
       this.date = globalize
         ? dayjs(this.date).utc()
-        : dayjs(this.date).tz('America/Chicago', true);
-      this.end_date = globalize ? dayjs.utc(this.end_date) : dayjs.utc(this.end_date).tz('America/Chicago', true);
+        : dayjs(this.date).tz(timezone, true);
+      this.end_date = globalize ? dayjs.utc(this.end_date) : dayjs.utc(this.end_date).tz(timezone, true);
       return this;
     }
-
 
     const dateBeforeConversion = this.date;
     if (this.date) {
       this.date = globalize
         ? dayjs(this.date).utc()
-        : dayjs(this.date).tz('America/Chicago');
+        : dayjs(this.date).tz(timezone);
 
       if (this.end_date) {
-        this.end_date = globalize ? dayjs.utc(this.end_date) : dayjs.utc(this.end_date).tz('America/Chicago');
+        this.end_date = globalize ? dayjs.utc(this.end_date) : dayjs.utc(this.end_date).tz(timezone);
       }
     }
 
@@ -873,7 +872,7 @@ export class Event implements Member {
           const endDateWithTime = dateBeforeConversion.set('hour', end_hour).set('minute', end_minute);
           const finalConverted = globalize
             ? dayjs(endDateWithTime).utc()
-            : dayjs(endDateWithTime).tz('America/Chicago');
+            : dayjs(endDateWithTime).tz(timezone);
           this.end_time = finalConverted.toChronos();
         }
       }
@@ -902,7 +901,7 @@ export class Event implements Member {
   }
 
   globalize(): Event {
-    return this.localize(true);
+    return this.localize(undefined, true);
   }
 
 

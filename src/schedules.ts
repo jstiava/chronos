@@ -397,7 +397,7 @@ export class Schedule implements Member {
     }
 
     isOpen(day: string | number = dayjs().day(), time: Chronos = dayjs().toLocalChronos()): boolean {
-        let pointer : any | null = null;
+        let pointer: any | null = null;
 
         pointer = typeof day === 'string' ? getDayIndex(day) : day as number;
 
@@ -426,7 +426,7 @@ export class Schedule implements Member {
     }
 
     print(day: string | number): string {
-        let pointer : any | null = null;
+        let pointer: any | null = null;
 
         pointer = typeof day === 'string' ? getDayIndex(day) : day as number;
         if (pointer == -1) {
@@ -449,7 +449,7 @@ export class Schedule implements Member {
     }
 
     isOpenWithContext(day: string | number = dayjs().day(), time?: Chronos): { isOpen: boolean, context: string } {
-        let pointer : any | null = null;
+        let pointer: any | null = null;
 
         if (typeof day === "string") {
             pointer = getDayIndex(day)
@@ -651,7 +651,7 @@ export class Schedule implements Member {
 
         const result = new Schedule();
         let hoursIndex = 2;
-        let resultHours : Hours | boolean | null = null;
+        let resultHours: Hours | boolean | null = null;
 
         for (const day of [0, 1, 2, 3, 4, 5, 6]) {
             const ours = this.days[day];
@@ -782,43 +782,51 @@ export class Schedule implements Member {
         return self;
     }
 
-    static create = (name: string, type: string, rawString: string, startDate: Dayjs, endDate?: Dayjs | null) => {
-        const self = new Schedule();
-        self.name = name;
-        self.schedule_type = type;
-        self.as_text = rawString;
-        self.days = [0, 0, 0, 0, 0, 0, 0];
-        self.hours = [];
-        self.start_date = startDate;
-        self.end_date = endDate || null;
+    interpret = (rawString: string) => {
+        this.as_text = rawString;
+
         const combinedScheduleRegex = new RegExp(Hours.COMBINED_SCHEDULE_SPLIT_PATTERN, 'gi');
         const matches = [...rawString.matchAll(combinedScheduleRegex)];
-
-        if (self.schedule_type === ScheduleType.Closure) {
-            return self;
-        }
 
         if (!matches) throw Error('No matches found.');
         for (const match of matches) {
             if (!match.groups || !match.groups.times || !match.groups.days) continue;
             try {
                 if (match.groups.times.includes('Open')) {
-                    self.spreadHoursMappingIntoDays(match.groups.days, Hours.OPEN);
+                    this.spreadHoursMappingIntoDays(match.groups.days, Hours.OPEN);
                     continue;
                 }
                 if (match.groups.times.includes('Closed')) {
-                    self.spreadHoursMappingIntoDays(match.groups.days, Hours.CLOSED);
+                    this.spreadHoursMappingIntoDays(match.groups.days, Hours.CLOSED);
                     continue;
                 }
-                self.hours.push(new Hours(match.groups.times));
-                self.spreadHoursMappingIntoDays(
+                this.hours.push(new Hours(match.groups.times));
+                this.spreadHoursMappingIntoDays(
                     match.groups.days,
-                    Hours.HOURS_LOCATOR_PREFIX + self.hours.length - 1,
+                    Hours.HOURS_LOCATOR_PREFIX + this.hours.length - 1,
                 );
             } catch (err) {
                 console.log(err);
             }
         }
+
+        return this;
+    }
+
+    static create = (name: string, type: string, rawString: string, startDate: Dayjs, endDate?: Dayjs | null) => {
+        const self = new Schedule();
+        self.name = name;
+        self.schedule_type = type;
+        self.days = [0, 0, 0, 0, 0, 0, 0];
+        self.hours = [];
+        self.start_date = startDate;
+        self.end_date = endDate || null;
+
+        if (self.schedule_type === ScheduleType.Closure) {
+            return self;
+        }
+
+        self.interpret(rawString)
 
         return self;
     }
