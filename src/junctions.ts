@@ -116,13 +116,41 @@ export class JunctionBuilder {
     return this;
   }
 
-   fromParentToChild() {
+  fromParentToChild() {
     if (!this.parent || !this.child) {
       throw Error("Must first set parent and child.")
     }
     this.isReversed = false;
     this.directionality = typeToDirectionality(this.parent.type);
     return this;
+  }
+
+
+
+  buildChildToParent() {
+
+    if (!this.parent || !this.child) {
+      throw Error("No parent or no child present.")
+    }
+    return {
+      ...Junction.getHostTemplate(null, this.parent, this.child),
+      directionality: this.directionality,
+      ...this.data
+    }
+
+  }
+
+  buildParentToChild() {
+
+    if (!this.parent || !this.child) {
+      throw Error("No parent or no child present.")
+    }
+
+    return {
+      ...Junction.getHostTemplate(null, this.parent, this.child, false),
+      directionality: this.reverseDirectionality,
+      ...this.reverse
+    }
   }
 
   fromChildToParent() {
@@ -409,7 +437,7 @@ export class Junction {
 
     return result;
   }
-  
+
 
   static resolveType = (item: (HostData | Membership) & { [key: string]: any }, excludeType: Type): {
     uuid: string,
