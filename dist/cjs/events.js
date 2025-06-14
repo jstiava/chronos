@@ -382,7 +382,7 @@ class Event {
         const bothEvents = other instanceof Event;
         return new junctions_1.Junction(Object.assign(Object.assign({}, junctions_1.Junction.getHostTemplate()), { [me]: this.id(), [bothEvents ? 'child_event_id' : their]: other.id() }), _1.Type.Event);
     }
-    localize(globalize = false) {
+    localize(timezone = 'America/Chicago', globalize = false) {
         if (this.is_local === !globalize) {
             console.log({
                 globalize,
@@ -394,17 +394,17 @@ class Event {
         if (isMultiDayEvent(this) || isAllSingleDay(this)) {
             this.date = globalize
                 ? (0, dayjs_1.default)(this.date).utc()
-                : (0, dayjs_1.default)(this.date).tz('America/Chicago', true);
-            this.end_date = globalize ? dayjs_1.default.utc(this.end_date) : dayjs_1.default.utc(this.end_date).tz('America/Chicago', true);
+                : (0, dayjs_1.default)(this.date).tz(timezone, true);
+            this.end_date = globalize ? dayjs_1.default.utc(this.end_date) : dayjs_1.default.utc(this.end_date).tz(timezone, true);
             return this;
         }
         const dateBeforeConversion = this.date;
         if (this.date) {
             this.date = globalize
                 ? (0, dayjs_1.default)(this.date).utc()
-                : (0, dayjs_1.default)(this.date).tz('America/Chicago');
+                : (0, dayjs_1.default)(this.date).tz(timezone);
             if (this.end_date) {
-                this.end_date = globalize ? dayjs_1.default.utc(this.end_date) : dayjs_1.default.utc(this.end_date).tz('America/Chicago');
+                this.end_date = globalize ? dayjs_1.default.utc(this.end_date) : dayjs_1.default.utc(this.end_date).tz(timezone);
             }
         }
         if (this.start_time) {
@@ -418,7 +418,7 @@ class Event {
                     const endDateWithTime = dateBeforeConversion.set('hour', end_hour).set('minute', end_minute);
                     const finalConverted = globalize
                         ? (0, dayjs_1.default)(endDateWithTime).utc()
-                        : (0, dayjs_1.default)(endDateWithTime).tz('America/Chicago');
+                        : (0, dayjs_1.default)(endDateWithTime).tz(timezone);
                     this.end_time = finalConverted.toChronos();
                 }
             }
@@ -443,7 +443,7 @@ class Event {
         });
     }
     globalize() {
-        return this.localize(true);
+        return this.localize(undefined, true);
     }
     constructor(event, is_local = false) {
         var _b;

@@ -87,6 +87,18 @@ class JunctionBuilder {
         this.directionality = typeToDirectionality(this.parent.type);
         return this;
     }
+    buildChildToParent() {
+        if (!this.parent || !this.child) {
+            throw Error("No parent or no child present.");
+        }
+        return Object.assign(Object.assign(Object.assign({}, Junction.getHostTemplate(null, this.parent, this.child)), { directionality: this.directionality }), this.data);
+    }
+    buildParentToChild() {
+        if (!this.parent || !this.child) {
+            throw Error("No parent or no child present.");
+        }
+        return Object.assign(Object.assign(Object.assign({}, Junction.getHostTemplate(null, this.parent, this.child, false)), { directionality: this.reverseDirectionality }), this.reverse);
+    }
     fromChildToParent() {
         if (!this.parent || !this.child) {
             throw Error("Must first set parent and child.");

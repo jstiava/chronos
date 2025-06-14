@@ -19,7 +19,7 @@ export declare class Chronos {
         hour: string;
         minute: string;
     }): string;
-    getAMP(): "AM" | "PM";
+    getAMP(): "PM" | "AM";
     getDayjs(truncate?: number, isLocal?: boolean): dayjs.Dayjs;
     isEqual(other: Chronos): boolean;
     isAfter(other: Chronos, inclusive?: boolean): boolean;

@@ -199,7 +199,7 @@ export declare class Event implements Member {
     union: (other: Event | null, date?: Dayjs) => Event;
     pushSchedule(newSchedule: Schedule): void;
     connectTo(other: Member): Junction;
-    localize(globalize?: boolean): Event;
+    localize(timezone?: string, globalize?: boolean): Event;
     when(): void;
     globalize(): Event;
     constructor(event?: Partial<EventData>, is_local?: boolean);

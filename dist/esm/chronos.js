@@ -1,21 +1,4 @@
 import dayjs from './dayjs';
-// export default interface Chronos {
-//   setHour(num: number): void;
-//   setMinute(num: number): void;
-//   changeHour(amount: number): number;
-//   changeMinute(amount: number): number;
-//   add(amount: number): Chronos;
-//   getHMN(): number;
-//   getMinute(): number;
-//   getHour(): number;
-//   print(simple: boolean, truncate: number): string;
-//   getDayjs(truncate: number, isLocal: boolean): Dayjs;
-//   isAfter(other: Chronos, inclusive?: boolean): boolean;
-//   isBefore(other: Chronos, inclusive?: boolean): boolean;
-//   isWithin(startingTime: Chronos, endingTime: Chronos): boolean;
-//   is(other: Chronos): boolean;
-//   to(other: Chronos | null, truncate?: number): string;
-// }
 export class Chronos {
     constructor(num, roundBy24 = true) {
         this.hour = 0;

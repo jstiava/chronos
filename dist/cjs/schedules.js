@@ -571,6 +571,33 @@ class Schedule {
             result.start_date = result.start_date || (0, dayjs_1.default)();
             return result;
         };
+        this.interpret = (rawString) => {
+            this.as_text = rawString;
+            const combinedScheduleRegex = new RegExp(hours_1.Hours.COMBINED_SCHEDULE_SPLIT_PATTERN, 'gi');
+            const matches = [...rawString.matchAll(combinedScheduleRegex)];
+            if (!matches)
+                throw Error('No matches found.');
+            for (const match of matches) {
+                if (!match.groups || !match.groups.times || !match.groups.days)
+                    continue;
+                try {
+                    if (match.groups.times.includes('Open')) {
+                        this.spreadHoursMappingIntoDays(match.groups.days, hours_1.Hours.OPEN);
+                        continue;
+                    }
+                    if (match.groups.times.includes('Closed')) {
+                        this.spreadHoursMappingIntoDays(match.groups.days, hours_1.Hours.CLOSED);
+                        continue;
+                    }
+                    this.hours.push(new hours_1.Hours(match.groups.times));
+                    this.spreadHoursMappingIntoDays(match.groups.days, hours_1.Hours.HOURS_LOCATOR_PREFIX + this.hours.length - 1);
+                }
+                catch (err) {
+                    console.log(err);
+                }
+            }
+            return this;
+        };
         this.junctions = new Map();
         this.metadata = {};
         this.theme_color = null;
@@ -635,36 +662,13 @@ Schedule.create = (name, type, rawString, startDate, endDate) => {
     const self = new Schedule();
     self.name = name;
     self.schedule_type = type;
-    self.as_text = rawString;
     self.days = [0, 0, 0, 0, 0, 0, 0];
     self.hours = [];
     self.start_date = startDate;
     self.end_date = endDate || null;
-    const combinedScheduleRegex = new RegExp(hours_1.Hours.COMBINED_SCHEDULE_SPLIT_PATTERN, 'gi');
-    const matches = [...rawString.matchAll(combinedScheduleRegex)];
     if (self.schedule_type === ScheduleType.Closure) {
         return self;
     }
-    if (!matches)
-        throw Error('No matches found.');
-    for (const match of matches) {
-        if (!match.groups || !match.groups.times || !match.groups.days)
-            continue;
-        try {
-            if (match.groups.times.includes('Open')) {
-                self.spreadHoursMappingIntoDays(match.groups.days, hours_1.Hours.OPEN);
-                continue;
-            }
-            if (match.groups.times.includes('Closed')) {
-                self.spreadHoursMappingIntoDays(match.groups.days, hours_1.Hours.CLOSED);
-                continue;
-            }
-            self.hours.push(new hours_1.Hours(match.groups.times));
-            self.spreadHoursMappingIntoDays(match.groups.days, hours_1.Hours.HOURS_LOCATOR_PREFIX + self.hours.length - 1);
-        }
-        catch (err) {
-            console.log(err);
-        }
-    }
+    self.interpret(rawString);
     return self;
 };

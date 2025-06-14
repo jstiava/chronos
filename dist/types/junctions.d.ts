@@ -46,6 +46,8 @@ export declare class JunctionBuilder {
     from(target: Pointer): this;
     to(target: Pointer): this;
     fromParentToChild(): this;
+    buildChildToParent(): any;
+    buildParentToChild(): any;
     fromChildToParent(): this;
     syncWithRefreshTokenExpiry(): this;
     designate(value: {

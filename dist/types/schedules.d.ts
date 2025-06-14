@@ -116,5 +116,6 @@ export declare class Schedule implements Member {
     constructor(data: Partial<ScheduleData>, is_local?: boolean);
     constructor(data: Schedule, is_local?: boolean);
     static createOffDrag: (startDate: Dayjs, endDate: Dayjs | null, startTime: Chronos, endTime: Chronos) => Schedule;
+    interpret: (rawString: string) => this;
     static create: (name: string, type: string, rawString: string, startDate: Dayjs, endDate?: Dayjs | null) => Schedule;
 }
