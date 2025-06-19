@@ -1,7 +1,7 @@
 
 import '@testing-library/jest-dom';
 import dayjs from '../src/dayjs';
-import { Chronos, Schedule, Event } from '../src';
+import { Chronos, Schedule, Event, Events } from '../src';
 
 
 test('preview of assignment', async () => {
@@ -831,7 +831,7 @@ test('preview of assignment', async () => {
 
     const assignment = assignments[assignments.length - 1];
 
-    const date = dayjs(assignment.due_at).utc(); 
+    const date = dayjs(assignment.due_at).utc();
     console.log(JSON.stringify({
         name: assignment.name,
         raw: assignment.due_at,
@@ -873,16 +873,191 @@ test('make event', async () => {
 })
 
 
-test('conversions', async () => {
-    const schedule = new Schedule();
+test('sort by date.', async () => {
+    const test = [
+        {
+            "type": "Event",
+            "uuid": "1b28ad3d-f79b-4f22-bb2f-7bbc325bd615",
+            "name": "Break for Fourth of July",
+            "location_name": null,
+            "location_address": null,
+            "location_place_id": null,
+            "end_location_name": null,
+            "end_location_address": null,
+            "end_location_place_id": null,
+            "start_time": null,
+            "end_time": null,
+            "date": 20250704,
+            "end_date": 20250706,
+            "cover_img": null,
+            "icon_img": null,
+            "wordmark_img": null,
+            "attachment_img": null,
+            "theme_color": "#31777e",
+            "search_vectors": "'31777e':6 'break':1 'fourth':3 'juli':5",
+            "event_type": "standard",
+            "link": null,
+            "quantity": null,
+            "capacity": null,
+            "subtitle": null,
+            "integration": null,
+            "data_store": null,
+            "junctions": [],
+            "schedules": [],
+            "children": [],
+            "metadata": {},
+            "isVisible": false,
+            "version": 0,
+            "attendees": null
+        },
+        {
+            "type": "Event",
+            "uuid": "8ddd9353-966f-4acb-bbb6-5424e55c2517",
+            "name": "No Meetings",
+            "location_name": null,
+            "location_address": null,
+            "location_place_id": null,
+            "end_location_name": null,
+            "end_location_address": null,
+            "end_location_place_id": null,
+            "start_time": null,
+            "end_time": null,
+            "date": 20250620,
+            "end_date": 20250620,
+            "cover_img": null,
+            "icon_img": null,
+            "wordmark_img": null,
+            "attachment_img": null,
+            "theme_color": "#31777e",
+            "search_vectors": "'31777e':3 'meet':2",
+            "event_type": "standard",
+            "link": null,
+            "quantity": null,
+            "capacity": null,
+            "subtitle": null,
+            "integration": null,
+            "data_store": null,
+            "junctions": [],
+            "schedules": [],
+            "children": [],
+            "metadata": {},
+            "isVisible": false,
+            "version": 0,
+            "attendees": null
+        },
+        {
+            "type": "Event",
+            "uuid": "c34afc22-da69-48db-a383-706982936796",
+            "name": "Last Day",
+            "location_name": null,
+            "location_address": null,
+            "location_place_id": null,
+            "end_location_name": null,
+            "end_location_address": null,
+            "end_location_place_id": null,
+            "start_time": null,
+            "end_time": null,
+            "date": 20250815,
+            "end_date": 20250815,
+            "cover_img": null,
+            "icon_img": null,
+            "wordmark_img": null,
+            "attachment_img": null,
+            "theme_color": "#31777e",
+            "search_vectors": "'31777e':3 'day':2 'last':1",
+            "event_type": "standard",
+            "link": null,
+            "quantity": null,
+            "capacity": null,
+            "subtitle": null,
+            "integration": null,
+            "data_store": null,
+            "junctions": [],
+            "schedules": [],
+            "children": [],
+            "metadata": {},
+            "isVisible": false,
+            "version": 0,
+            "attendees": null
+        },
+        {
+            "type": "Event",
+            "uuid": "ccaec48a-3c1c-4ae5-9cc8-eebb1a33d2cc",
+            "name": "First Day",
+            "location_name": null,
+            "location_address": null,
+            "location_place_id": null,
+            "end_location_name": null,
+            "end_location_address": null,
+            "end_location_place_id": null,
+            "start_time": null,
+            "end_time": null,
+            "date": 20250609,
+            "end_date": 20250609,
+            "cover_img": null,
+            "icon_img": null,
+            "wordmark_img": null,
+            "attachment_img": null,
+            "theme_color": "#31777e",
+            "search_vectors": "'31777e':3 'day':2 'first':1",
+            "event_type": "standard",
+            "link": null,
+            "quantity": null,
+            "capacity": null,
+            "subtitle": null,
+            "integration": null,
+            "data_store": null,
+            "junctions": [],
+            "schedules": [],
+            "children": [],
+            "metadata": {},
+            "isVisible": false,
+            "version": 0,
+            "attendees": null
+        },
+        {
+            "type": "Event",
+            "uuid": "d3cbbd3c-3e5e-4568-969a-305f305d861d",
+            "name": "Juneteeth (No Meetings)",
+            "location_name": null,
+            "location_address": null,
+            "location_place_id": null,
+            "end_location_name": null,
+            "end_location_address": null,
+            "end_location_place_id": null,
+            "start_time": null,
+            "end_time": null,
+            "date": 20250619,
+            "end_date": 20250619,
+            "cover_img": null,
+            "icon_img": null,
+            "wordmark_img": null,
+            "attachment_img": null,
+            "theme_color": "#31777e",
+            "search_vectors": "'31777e':4 'juneteeth':1 'meet':3",
+            "event_type": "standard",
+            "link": null,
+            "quantity": null,
+            "capacity": null,
+            "subtitle": null,
+            "integration": null,
+            "data_store": null,
+            "junctions": [],
+            "schedules": [],
+            "children": [],
+            "metadata": {},
+            "isVisible": false,
+            "version": 0,
+            "attendees": null
+        }
+    ]
 
-    const copy = schedule.add(new Event({
-        name: "Example",
-        date: dayjs().yyyymmdd(),
-        start_time: "8",
-        end_time: "11.333"
-    }));
-
-    console.log(copy);
+    const copy = [...test];
+    const built = test.map((x: any) => new Event(x, true));
+    built.sort(Events.sortByDate)
+    console.log({
+        before: copy.map(x => x.name),
+        after: built.map(x => x.name)
+    });
 
 })
