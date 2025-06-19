@@ -31,7 +31,7 @@ test('event types', async () => {
         end_date: 20250615
     });
 
-    const theSchedule = new Schedule().interpret("Mon-Thu: 9am-5pm, Fri: 8am-3pm, 6pm-10pm, 11pm-2am")
+    const theSchedule = new Schedule().interpret("Mon-Thu: 9am-5pm, Fri: 8am-3pm, 6pm-10pm, 11pm-2am");
     const scheduled = new Event({
         name: "Service Hours",
         schedules: [theSchedule.eject()]

@@ -1,7 +1,7 @@
 
 import '@testing-library/jest-dom';
 import dayjs from '../src/dayjs';
-import { Event } from '../src/events';
+import { Chronos, Schedule, Event } from '../src';
 
 
 test('preview of assignment', async () => {
@@ -874,5 +874,15 @@ test('make event', async () => {
 
 
 test('conversions', async () => {
-    const test = dayjs.utc()
+    const schedule = new Schedule();
+
+    const copy = schedule.add(new Event({
+        name: "Example",
+        date: dayjs().yyyymmdd(),
+        start_time: "8",
+        end_time: "11.333"
+    }));
+
+    console.log(copy);
+
 })

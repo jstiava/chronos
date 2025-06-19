@@ -164,6 +164,30 @@ Events.sortByLength = (date, a, b) => {
         return 0;
     }
 };
+Events.sortByDate = (a, b) => {
+    if (!a && !b)
+        return 0;
+    if (!a)
+        return 1;
+    if (!b)
+        return -1;
+    const aDate = a.date;
+    const bDate = b.date;
+    if (!aDate && !bDate) {
+        return 0;
+    }
+    if (!aDate) {
+        return 1;
+    }
+    if (!bDate) {
+        return -1;
+    }
+    const diff = aDate.yyyymmdd() - bDate.yyyymmdd();
+    if (diff === 0) {
+        return 0;
+    }
+    return diff;
+};
 Events.sortByTime = (a, b) => {
     if (!a && !b)
         return 0;

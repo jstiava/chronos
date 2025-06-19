@@ -1,4 +1,4 @@
-import {Chronos} from './chronos';
+import { Chronos } from './chronos';
 import dayjs from './dayjs';
 import { ImageStub } from './files';
 import { Dayjs } from 'dayjs';
@@ -149,10 +149,10 @@ export class Events {
         detailed
       },
     })
-      .then((res : any) => {
+      .then((res: any) => {
         return res.data;
       })
-      .catch((err : any) => {
+      .catch((err: any) => {
         throw err
       })
   }
@@ -171,14 +171,14 @@ export class Events {
         sharing,
         actions
       })
-      .then((res : any) => {
+      .then((res: any) => {
 
         if (res.data.count != values.length) {
           throw Error("Not all events were created.")
         }
         return;
       })
-      .catch((error : any) => {
+      .catch((error: any) => {
         throw Error;
       });
   }
@@ -203,6 +203,37 @@ export class Events {
     catch (err) {
       return 0;
     }
+  }
+
+
+  static sortByDate = (a: Event, b: Event) => {
+
+    if (!a && !b) return 0;
+
+    if (!a) return 1;
+    if (!b) return -1;
+
+    const aDate = a.date;
+    const bDate = b.date;
+
+    if (!aDate && !bDate) {
+      return 0;
+    }
+
+    if (!aDate) {
+      return 1;
+    }
+    if (!bDate) {
+      return -1;
+    }
+
+
+    const diff = aDate.yyyymmdd() - bDate.yyyymmdd();
+    if (diff === 0) {
+      return 0;
+    }
+
+    return diff;
   }
 
   static sortByTime = (a: Event, b: Event) => {
@@ -244,10 +275,10 @@ export class Events {
           uuid: newEvent.uuid,
           event: newEvent.eject(),
         })
-        .then((res : any) => {
+        .then((res: any) => {
           return;
         })
-        .catch((err : any) => {
+        .catch((err: any) => {
           console.log(err);
           throw Error("Something went wrong that prevented an event update.")
         })
@@ -264,7 +295,7 @@ export class Events {
       uuid: event.uuid,
       attendee_type: commitment
     })
-      .then((res : any) => {
+      .then((res: any) => {
         return;
       })
   }
@@ -278,13 +309,13 @@ export class Events {
           isUser: source instanceof Profile
         },
       })
-      .then((res : any) => {
+      .then((res: any) => {
         if (!res.data.event) {
           return null;
         }
         return res.data.event;
       })
-      .catch((err : any) => {
+      .catch((err: any) => {
         console.log({
           message: "Events API get",
           err
@@ -299,14 +330,14 @@ export class Events {
         q: query
       }
     })
-      .then((res : any) => {
-        let searchResults : Event[] = [];
+      .then((res: any) => {
+        let searchResults: Event[] = [];
         for (const event of res.data.candidates) {
           searchResults.push(new Event(event).localize());
         }
         return searchResults;
       })
-      .catch((err : any) => {
+      .catch((err: any) => {
         console.log(err);
         return [];
       });
@@ -474,11 +505,11 @@ export class Event implements Member {
       },
       type: Type.Event
     })
-      .then((res : any) => {
+      .then((res: any) => {
         copy.junctions.set(source.id(), new Junction(res.data.event.junction, Type.Event));
         return copy;
       })
-      .catch((err : any) => {
+      .catch((err: any) => {
         throw Error("Something went wrong.");
       })
 
