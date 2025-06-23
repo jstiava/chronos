@@ -183,7 +183,8 @@ export class Events {
       });
   }
 
-  static sortByLength = (date: Dayjs, a: Event, b: Event) => {
+
+  static sortByRemainingDays = (date: Dayjs, a: Event, b: Event) => {
     try {
 
       if (!a.date || !b.date) {

@@ -145,7 +145,7 @@ Events.post = (source, values, sharing, actions) => __awaiter(void 0, void 0, vo
         throw Error;
     });
 });
-Events.sortByLength = (date, a, b) => {
+Events.sortByRemainingDays = (date, a, b) => {
     try {
         if (!a.date || !b.date) {
             if (!a.date) {

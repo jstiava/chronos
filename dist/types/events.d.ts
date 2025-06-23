@@ -120,7 +120,7 @@ export declare class Events {
         events: EventData[];
     }>;
     static post: (source: Member, values: EventData | EventData[], sharing?: any, actions?: any) => Promise<void>;
-    static sortByLength: (date: Dayjs, a: Event, b: Event) => number;
+    static sortByRemainingDays: (date: Dayjs, a: Event, b: Event) => number;
     static sortByDate: (a: Event, b: Event) => number;
     static sortByTime: (a: Event, b: Event) => number;
     static update: (source: Member, newEvent: Event) => Promise<void>;
