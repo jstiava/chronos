@@ -3,7 +3,7 @@ import axios from 'axios';
 const axiosInstance = axios.create({
     baseURL: 
     // process.env.NODE_ENV === 'production' ? String(process.env.NEXT_PUBLIC_BACKEND_URL_PROD) : 'http://192.168.1.92:3000/',
-    process.env.NODE_ENV === 'production' ? String(process.env.NEXT_PUBLIC_BACKEND_URL_PROD) : 'http://localhost:3000/',
+    process.env.NODE_ENV === 'production' ? String(process.env.NEXT_PUBLIC_BACKEND_URL_PROD) : String(process.env.NEXT_TEST_BACKEND_URL_PROD),
     // String(process.env.NEXT_PUBLIC_BACKEND_URL_PROD),
     timeout: 5000,
     headers: {
