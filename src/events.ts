@@ -138,7 +138,7 @@ export class Events {
 
   static fetch = async (source: Member, start: Dayjs, end: Dayjs, detailed: boolean = false): Promise<{ message: string, events: EventData[] }> => {
 
-    return await axios.get(`/api/v1/events`, {
+    return await axios.get(`api/v1/events`, {
       params: {
         type: source.getType(),
         id: source.id(),
@@ -303,7 +303,7 @@ export class Events {
 
   static get = async (source: Member, id: string): Promise<EventData | null> => {
     return await axios
-      .get(`/api/v1/events`, {
+      .get(`api/v1/events`, {
         params: {
           event_id: id,
           source: MemberFactory.getToken(source),

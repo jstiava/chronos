@@ -105,7 +105,7 @@ export class Events {
 }
 _a = Events;
 Events.fetch = (source_1, start_1, end_1, ...args_1) => __awaiter(void 0, [source_1, start_1, end_1, ...args_1], void 0, function* (source, start, end, detailed = false) {
-    return yield axios.get(`/api/v1/events`, {
+    return yield axios.get(`api/v1/events`, {
         params: {
             type: source.getType(),
             id: source.id(),
@@ -246,7 +246,7 @@ Events.save = (source_1, event_1, ...args_1) => __awaiter(void 0, [source_1, eve
 });
 Events.get = (source, id) => __awaiter(void 0, void 0, void 0, function* () {
     return yield axios
-        .get(`/api/v1/events`, {
+        .get(`api/v1/events`, {
         params: {
             event_id: id,
             source: MemberFactory.getToken(source),
